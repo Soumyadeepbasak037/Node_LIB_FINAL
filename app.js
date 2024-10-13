@@ -63,6 +63,58 @@ app.post('/issue-book', upload.none(), (req, res) => {
     }
 });
 
+
+// app.post('/return',upload.none(),(req,res)=>{
+//     try{
+
+//     }
+//     catch(error){
+//         res.send(error)
+//     }
+// })
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
+
+
+
+
+const entities_exist=(book_id,member_id)=>{
+    const bookfile_data = fs.readFileSync(bookfile_path,'utf-8')
+    const memberfile_data =  fs.readFileSync(memberfile_path,'utf-8')
+
+    const books = JSON.parse(bookfile_data);
+    const members = JSON.parse(memberfile_data);
+
+    const req_book_ind = books.findIndex((element) => {
+        return element.id === book_id;
+    });
+
+    const req_member_id = members.findIndex((element) => {
+        return element.id === member_id;
+    });
+
+    if (req_member_id !== -1 && req_book_ind !== -1) {
+        return true;
+    }
+    else{
+        return false
+    }
+
+}
+
+
+const already_issued = (book_id, member_id) => {
+    if (entities_exist(book_id, member_id)) {
+        const issuefile_data = fs.readFileSync(issuefile_path,'utf-8')
+        const issues = JSON.parse(issuefile_data)
+        
+        
+        return true; 
+    } else {
+        return false; 
+    }
+};
