@@ -1,11 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library Management System</title>
-</head>
-<body>
-    
-</body>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .form-container {
+        margin-bottom: 30px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 500px;
+      }
+      .form-container h2 {
+        margin-bottom: 10px;
+      }
+      .form-container label,
+      .form-container input {
+        display: block;
+        margin: 5px 0;
+      }
+      .form-container button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Library Management System</h1>
+
+    <div class="form-container">
+      <h2>Add New Book</h2>
+      <form action="/books/add-book" method="POST" enctype='multipart/form-data' id="bookform">
+        <label for="book-title">Book Title:</label>
+        <input type="text" id="title" name="title" required />
+
+        <label for="book-author">Author:</label>
+        <input type="text" id="book-author" name="author" required />
+
+        <button type="submit">Add Book</button>
+      </form>
+    </div>
+
+
+    <div class="form-container">
+      <h2>Add New Member</h2>
+      <form action="/members/add-member" method="POST" enctype='multipart/form-data'>
+        <label for="member-name">Member Name:</label>
+        <input type="text" id="member-name" name="name" required />
+        <button type="submit">Add Member</button>
+      </form>
+    </div>
+
+
+    <div class="form-container">
+      <h2>Issue Book</h2>
+      <form action="/issue-book" method="POST" enctype='multipart/form-data'>
+        <label for="book-id">Book ID:</label>
+        <input type="text" id="book-id" name="book_id" required />
+
+        <label for="member-id">Member ID:</label>
+        <input type="text" id="member-id" name="member_id" required />
+
+        <button type="submit">Issue Book</button>
+      </form>
+    </div>
+    <script>
+        // const add_book_form = document.getElementById('bookform')
+        // add_book_form.addEventListener('submit',(event)=>{event.preventDefault()})
+    </script>
+  </body>
 </html>
