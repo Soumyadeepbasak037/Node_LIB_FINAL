@@ -15,12 +15,9 @@ const issuefile_path = path.join(__dirname,'issue.json')
 const bookManagerRoutes = require('./bookmanager.js');
 const memberManagerRoutes = require('./membermanager.js');
 
-// Use routes
-// app.use('/api/users', userRoutes);
 app.use('/books', bookManagerRoutes);
 app.use('/members', memberManagerRoutes);
 
-// Start server
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
@@ -57,6 +54,9 @@ app.post('/issue-book', upload.none(), (req, res) => {
 
             fs.writeFileSync(issuefile_path, JSON.stringify(issue_arr));
             res.send(issue_arr);
+        }
+        else{
+            res.send("Member or Book id incorrect")
         }
     } catch (error) {
         res.send(error);

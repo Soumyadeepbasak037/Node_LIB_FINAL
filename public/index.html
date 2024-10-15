@@ -28,6 +28,29 @@
       .form-container button {
         margin-top: 10px;
       }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .input-container {
+            margin-top: 20px;
+        }
+        .input-container input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+        .input-container button {
+            padding: 6px 12px;
+        }
     </style>
   </head>
   <body>
@@ -35,7 +58,7 @@
 
     <div class="form-container">
       <h2>Add New Book</h2>
-      <form action="/books/add-book" method="POST" enctype='multipart/form-data' id="bookform">
+      <form class="add_form" enctype="multipart/form-data" id="bookform">
         <label for="book-title">Book Title:</label>
         <input type="text" id="title" name="title" required />
 
@@ -44,34 +67,75 @@
 
         <button type="submit">Add Book</button>
       </form>
+      <script>
+        const add_form = document.querySelector('.add_form');
+        add_form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const formdata = new FormData(add_form);
+          fetch('/books/add-book', {
+            method: 'POST',
+            body: formdata,
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              alert(data);
+              window.location.reload();
+            });
+        });
+      </script>
     </div>
 
+    <div>
+      <table id="view-books-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
 
-    <div class="form-container">
-      <h2>Add New Member</h2>
-      <form action="/members/add-member" method="POST" enctype='multipart/form-data'>
-        <label for="member-name">Member Name:</label>
-        <input type="text" id="member-name" name="name" required />
-        <button type="submit">Add Member</button>
-      </form>
+        </tbody>
+      </table>
+
+
+
+
+      <script>
+        function addTableRow(title,author,id) {
+          const tablebody = document.getElementById('view-books-table').getElementsByTagName('tbody')[0]
+          const newRow = tablebody.insertRow(); 
+
+          const titleCell = newRow.insertCell(0);
+          const authorCell = newRow.insertCell(1);
+          const editbtn = newRow.insertCell(2);
+
+          titleCell.textContent = title;
+          authorCell.textContent = author;
+          // editbtn.innerHTML = (`<button onclick = "edit_fnc(${title.textContent})">Edit</button>`)
+          editbtn.innerHTML = `<button onclick="edit_fnc('${id}')">Edit</button>`;
+          
+    }
+        fetch('/books/view-books', {
+            method: 'GET',
+          })
+            .then((res) => res.json())  
+            .then((data) => { 
+              console.log(data.forEach(element => {
+                addTableRow(element.title,element.author,element.id)
+              }));
+            });
+        const edit_fnc = (id)=>{
+          console.log(id)
+
+        }
+
+            
+            
+            
+      </script>
     </div>
-
-
-    <div class="form-container">
-      <h2>Issue Book</h2>
-      <form action="/issue-book" method="POST" enctype='multipart/form-data'>
-        <label for="book-id">Book ID:</label>
-        <input type="text" id="book-id" name="book_id" required />
-
-        <label for="member-id">Member ID:</label>
-        <input type="text" id="member-id" name="member_id" required />
-
-        <button type="submit">Issue Book</button>
-      </form>
-    </div>
-    <script>
-        // const add_book_form = document.getElementById('bookform')
-        // add_book_form.addEventListener('submit',(event)=>{event.preventDefault()})
-    </script>
   </body>
 </html>

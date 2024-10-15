@@ -3,7 +3,9 @@ const multer = require('multer')
 const router = express.Router()
 const fs = require('fs')
 const path = require('path')
+
 const upload = multer()
+
 const bookfile_path = path.join(__dirname,'books.json')
 
 
@@ -15,7 +17,7 @@ router.get('/view-books',(req,res)=>{
     try{
         data = fs.readFileSync(bookfile_path,'utf-8')
         books = JSON.parse(data)
-        res.send(books)
+        res.send(JSON.stringify(books))
     }
     catch(error){
         res.send(error);
@@ -33,8 +35,8 @@ router.post('/add-book',upload.none(),(req,res)=>{
     }
     books.push(new_book),
     fs.writeFileSync(bookfile_path,JSON.stringify(books))
-    res.send(`${new_book.title} was added.`)
-})
+    res.send(JSON.stringify(`${new_book.title} was added.`))
+}) 
 
 router.post('/book_id',upload.none(),(req,res)=>{
     const target_id = req.body.id;
@@ -77,7 +79,7 @@ router.post('/update',upload.none(),(req,res)=>{
             books[req_ind].title = req.body.title
             books[req_ind].author = req.body.author
             fs.writeFileSync(bookfile_path,JSON.stringify(books))
-            res.send("Books Updated successfully") 
+            res.send(JSON.stringify("Books Updated successfully")) 
         }
         else{
             res.send("Book not found")
